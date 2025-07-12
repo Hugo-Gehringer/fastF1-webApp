@@ -1,0 +1,797 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Enhanced Mercedes AMG F1 Professional Components */
+@layer components {
+  .f1-gradient {
+    @apply bg-gradient-to-br from-mercedes-black via-mercedes-charcoal to-mercedes-gunmetal;
+  }
+
+  .f1-hero-gradient {
+    background: linear-gradient(135deg, #000000 0%, #1C1C1E 25%, #00D2BE 50%, #C0C0C0 75%, #000000 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  .f1-card {
+    @apply bg-gradient-to-br from-mercedes-charcoal to-mercedes-gunmetal rounded-2xl shadow-dashboard border border-mercedes-dark-silver/30 overflow-hidden relative;
+  }
+
+  .f1-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 210, 190, 0.8), transparent);
+  }
+
+  .f1-button {
+    @apply px-8 py-4 bg-gradient-to-r from-mercedes-petronas to-mercedes-dark-cyan text-mercedes-black font-racing font-semibold rounded-xl shadow-mercedes-glow hover:shadow-mercedes-neon transform hover:scale-105 transition-all duration-300 disabled:bg-mercedes-gunmetal disabled:cursor-not-allowed disabled:transform-none focus:outline-none focus:ring-4 focus:ring-mercedes-petronas focus:ring-opacity-30 relative overflow-hidden;
+  }
+
+  .f1-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .f1-button:hover::before {
+    left: 100%;
+  }
+
+  .f1-input {
+    @apply w-full px-6 py-4 bg-mercedes-gunmetal border border-mercedes-dark-silver/50 rounded-xl text-mercedes-platinum placeholder-mercedes-dark-silver focus:outline-none focus:ring-2 focus:ring-mercedes-petronas focus:border-mercedes-petronas transition-all duration-300 font-racing;
+  }
+
+  .f1-select {
+    @apply w-full px-6 py-4 bg-mercedes-gunmetal border border-mercedes-dark-silver/50 rounded-xl text-mercedes-platinum focus:outline-none focus:ring-2 focus:ring-mercedes-petronas focus:border-mercedes-petronas transition-all duration-300 font-racing;
+  }
+
+  .f1-error {
+    @apply bg-gradient-to-r from-red-900 to-red-800 border border-red-600 text-red-100 px-6 py-4 rounded-xl shadow-lg backdrop-blur-sm;
+  }
+
+  .f1-success {
+    @apply bg-gradient-to-r from-mercedes-green/20 to-mercedes-petronas/20 border border-mercedes-green text-mercedes-green px-6 py-4 rounded-xl shadow-lg backdrop-blur-sm;
+  }
+
+  .f1-warning {
+    @apply bg-gradient-to-r from-yellow-900 to-yellow-800 border border-yellow-600 text-yellow-100 px-6 py-4 rounded-xl shadow-lg backdrop-blur-sm;
+  }
+
+  .data-card {
+    @apply bg-gradient-to-br from-mercedes-charcoal to-mercedes-gunmetal border border-mercedes-dark-silver/30 rounded-xl p-6 shadow-dashboard hover:shadow-card-hover transform hover:scale-105 transition-all duration-300 relative overflow-hidden;
+  }
+
+  .data-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--accent-color, #00D2BE), transparent);
+  }
+
+  .racing-grid {
+    background-image:
+      linear-gradient(rgba(0, 210, 190, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 210, 190, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .speed-indicator {
+    @apply relative overflow-hidden;
+  }
+
+  .speed-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00D2BE, transparent);
+    animation: mercedesScan 2s ease-in-out infinite;
+  }
+
+  .championship-gold {
+    background: linear-gradient(135deg, #C0C0C0 0%, #E5E5EA 50%, #C0C0C0 100%);
+    background-size: 200% 200%;
+    animation: silverShimmer 3s ease-in-out infinite;
+  }
+
+  .telemetry-display {
+    @apply font-f1 bg-gradient-to-r from-mercedes-black to-mercedes-charcoal text-mercedes-petronas p-4 rounded-lg border border-mercedes-petronas shadow-mercedes-glow relative;
+  }
+
+  .telemetry-display::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #00D2BE, transparent, #00D2BE);
+    z-index: -1;
+    border-radius: inherit;
+    animation: borderPulse 2s ease-in-out infinite;
+  }
+
+  /* Nouvelles classes réutilisables pour les composants */
+
+  /* Headers professionnels */
+  .f1-header {
+    @apply flex items-center justify-between;
+  }
+
+  .f1-header-content {
+    @apply space-y-2;
+  }
+
+  .f1-header-subtitle {
+    @apply text-mercedes-dark-silver font-racing mt-2;
+  }
+
+  .f1-section-title {
+    @apply text-xl font-racing font-semibold text-mercedes-platinum mb-6 flex items-center;
+  }
+
+  .f1-section-indicator {
+    @apply w-1 h-6 bg-gradient-to-t from-mercedes-petronas to-mercedes-cyan rounded mr-3;
+  }
+
+  /* Formulaires et inputs */
+  .f1-form-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+  }
+
+  .f1-form-grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6 mb-8;
+  }
+
+  .f1-form-grid-3 {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6 mb-8;
+  }
+
+  .f1-form-field {
+    @apply space-y-3;
+  }
+
+  .f1-label {
+    @apply block text-sm font-racing font-medium text-mercedes-dark-silver uppercase tracking-wider;
+  }
+
+  /* Cartes de données avec couleurs variables */
+  .f1-metric-card {
+    @apply data-card;
+  }
+
+  .f1-metric-header {
+    @apply flex items-center justify-between mb-4;
+  }
+
+  .f1-metric-title {
+    @apply font-racing font-semibold text-mercedes-platinum uppercase text-sm;
+  }
+
+  .f1-metric-indicator {
+    @apply w-3 h-3 rounded-full animate-pulse;
+  }
+
+  .f1-metric-value {
+    @apply text-xl font-f1 font-bold text-mercedes-platinum mb-2;
+  }
+
+  .f1-metric-value-large {
+    @apply text-3xl font-f1 font-bold mb-2;
+  }
+
+  .f1-metric-value-2xl {
+    @apply text-2xl font-f1 font-bold mb-2;
+  }
+
+  .f1-metric-subtitle {
+    @apply text-sm text-mercedes-dark-silver font-racing;
+  }
+
+  /* Indicateurs de couleur Mercedes */
+  .indicator-silver {
+    @apply bg-mercedes-silver;
+  }
+
+  .indicator-petronas {
+    @apply bg-mercedes-petronas;
+  }
+
+  .indicator-cyan {
+    @apply bg-mercedes-cyan;
+  }
+
+  .indicator-green {
+    @apply bg-mercedes-green;
+  }
+
+  .indicator-platinum {
+    @apply bg-mercedes-platinum;
+  }
+
+  .indicator-dark-silver {
+    @apply bg-mercedes-dark-silver;
+  }
+
+  /* Legacy indicators for compatibility */
+  .indicator-red {
+    @apply bg-f1-red;
+  }
+
+  .indicator-blue {
+    @apply bg-electric-blue;
+  }
+
+  .indicator-gold {
+    @apply bg-f1-gold;
+  }
+
+  .indicator-orange {
+    @apply bg-racing-orange;
+  }
+
+  .indicator-purple {
+    @apply bg-purple-500;
+  }
+
+  /* Valeurs colorées Mercedes */
+  .value-silver {
+    @apply text-mercedes-silver;
+  }
+
+  .value-petronas {
+    @apply text-mercedes-petronas;
+  }
+
+  .value-cyan {
+    @apply text-mercedes-cyan;
+  }
+
+  .value-green {
+    @apply text-mercedes-green;
+  }
+
+  .value-platinum {
+    @apply text-mercedes-platinum;
+  }
+
+  .value-dark-silver {
+    @apply text-mercedes-dark-silver;
+  }
+
+  /* Legacy values for compatibility */
+  .value-red {
+    @apply text-f1-red;
+  }
+
+  .value-blue {
+    @apply text-electric-blue;
+  }
+
+  .value-gold {
+    @apply text-f1-gold;
+  }
+
+  .value-orange {
+    @apply text-racing-orange;
+  }
+
+  .value-purple {
+    @apply text-purple-400;
+  }
+
+  /* F1 Team Colors 2024 */
+  .team-ferrari {
+    @apply text-red-600;
+  }
+
+  .team-mclaren {
+    @apply text-orange-500;
+  }
+
+  .team-mercedes {
+    @apply text-mercedes-petronas;
+  }
+
+  .team-red-bull {
+    @apply text-blue-600;
+  }
+
+  .team-williams {
+    @apply text-blue-400;
+  }
+
+  .team-alpine {
+    @apply text-pink-500;
+  }
+
+  .team-rb {
+    @apply text-blue-700;
+  }
+
+  .team-aston-martin {
+    @apply text-green-500;
+  }
+
+  .team-kick-sauber {
+    @apply text-green-400;
+  }
+
+  .team-haas {
+    @apply text-gray-300;
+  }
+
+  /* Team Indicators */
+  .indicator-ferrari {
+    @apply bg-red-600;
+  }
+
+  .indicator-mclaren {
+    @apply bg-orange-500;
+  }
+
+  .indicator-mercedes {
+    @apply bg-mercedes-petronas;
+  }
+
+  .indicator-red-bull {
+    @apply bg-blue-600;
+  }
+
+  .indicator-williams {
+    @apply bg-blue-400;
+  }
+
+  .indicator-alpine {
+    @apply bg-pink-500;
+  }
+
+  .indicator-rb {
+    @apply bg-blue-700;
+  }
+
+  .indicator-aston-martin {
+    @apply bg-green-500;
+  }
+
+  .indicator-kick-sauber {
+    @apply bg-green-400;
+  }
+
+  .indicator-haas {
+    @apply bg-gray-300;
+  }
+
+  /* Team Card Accents */
+  .team-card-ferrari {
+    --accent-color: #DC2626;
+    @apply border-red-600/50;
+  }
+
+  .team-card-mclaren {
+    --accent-color: #F97316;
+    @apply border-orange-500/50;
+  }
+
+  .team-card-mercedes {
+    --accent-color: #00D2BE;
+    @apply border-mercedes-petronas/50;
+  }
+
+  .team-card-red-bull {
+    --accent-color: #2563EB;
+    @apply border-blue-600/50;
+  }
+
+  .team-card-williams {
+    --accent-color: #60A5FA;
+    @apply border-blue-400/50;
+  }
+
+  .team-card-alpine {
+    --accent-color: #EC4899;
+    @apply border-pink-500/50;
+  }
+
+  .team-card-rb {
+    --accent-color: #1D4ED8;
+    @apply border-blue-700/50;
+  }
+
+  .team-card-aston-martin {
+    --accent-color: #10B981;
+    @apply border-green-500/50;
+  }
+
+  .team-card-kick-sauber {
+    --accent-color: #4ADE80;
+    @apply border-green-400/50;
+  }
+
+  .team-card-haas {
+    --accent-color: #D1D5DB;
+    @apply border-gray-300/50;
+  }
+
+  .team-card-default {
+    --accent-color: #8E8E93;
+    @apply border-mercedes-dark-silver/50;
+  }
+
+  /* Team Card Accents - Higher specificity to override data-card */
+  .f1-metric-card.team-card-ferrari {
+    --accent-color: #DC2626;
+    @apply border-red-600/70 !important;
+  }
+
+  .f1-metric-card.team-card-mclaren {
+    --accent-color: #F97316;
+    @apply border-orange-500/70 !important;
+  }
+
+  .f1-metric-card.team-card-mercedes {
+    --accent-color: #00D2BE;
+    @apply border-mercedes-petronas/70 !important;
+  }
+
+  .f1-metric-card.team-card-red-bull {
+    --accent-color: #2563EB;
+    @apply border-blue-600/70 !important;
+  }
+
+  .f1-metric-card.team-card-williams {
+    --accent-color: #60A5FA;
+    @apply border-blue-400/70 !important;
+  }
+
+  .f1-metric-card.team-card-alpine {
+    --accent-color: #EC4899;
+    @apply border-pink-500/70 !important;
+  }
+
+  .f1-metric-card.team-card-rb {
+    --accent-color: #1D4ED8;
+    @apply border-blue-700/70 !important;
+  }
+
+  .f1-metric-card.team-card-aston-martin {
+    --accent-color: #10B981;
+    @apply border-green-500/70 !important;
+  }
+
+  .f1-metric-card.team-card-kick-sauber {
+    --accent-color: #4ADE80;
+    @apply border-green-400/70 !important;
+  }
+
+  .f1-metric-card.team-card-haas {
+    --accent-color: #D1D5DB;
+    @apply border-gray-300/70 !important;
+  }
+
+  .f1-metric-card.team-card-default {
+    --accent-color: #8E8E93;
+    @apply border-mercedes-dark-silver/70 !important;
+  }
+
+  /* Legacy team card classes for fallback */
+  .team-card-ferrari {
+    --accent-color: #DC2626;
+  }
+
+  .team-card-mclaren {
+    --accent-color: #F97316;
+  }
+
+  .team-card-mercedes {
+    --accent-color: #00D2BE;
+  }
+
+  .team-card-red-bull {
+    --accent-color: #2563EB;
+  }
+
+  .team-card-williams {
+    --accent-color: #60A5FA;
+  }
+
+  .team-card-alpine {
+    --accent-color: #EC4899;
+  }
+
+  .team-card-rb {
+    --accent-color: #1D4ED8;
+  }
+
+  .team-card-aston-martin {
+    --accent-color: #10B981;
+  }
+
+  .team-card-kick-sauber {
+    --accent-color: #4ADE80;
+  }
+
+  .team-card-haas {
+    --accent-color: #D1D5DB;
+  }
+
+  .team-card-default {
+    --accent-color: #8E8E93;
+  }
+
+  /* Grilles de données */
+  .f1-data-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .f1-data-grid-2 {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  }
+
+  .f1-data-grid-4 {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+
+  .f1-data-grid-xl {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  }
+
+  /* Cartes spécialisées Mercedes */
+  .f1-header-card {
+    @apply f1-card bg-gradient-to-r p-6;
+  }
+
+  .f1-header-card-petronas {
+    @apply from-mercedes-petronas/20 to-mercedes-cyan/20 border-mercedes-petronas/30;
+  }
+
+  .f1-header-card-silver {
+    @apply from-mercedes-silver/20 to-mercedes-platinum/20 border-mercedes-silver/30;
+  }
+
+  .f1-header-card-green {
+    @apply from-mercedes-green/20 to-mercedes-petronas/20 border-mercedes-green/30;
+  }
+
+  .f1-header-card-dark {
+    @apply from-mercedes-charcoal/20 to-mercedes-gunmetal/20 border-mercedes-dark-silver/30;
+  }
+
+  /* Legacy header cards */
+  .f1-header-card-purple {
+    @apply from-purple-900/20 to-purple-800/20 border-purple-500/30;
+  }
+
+  .f1-header-card-blue {
+    @apply from-blue-900/20 to-blue-800/20 border-blue-500/30;
+  }
+
+  .f1-header-card-red {
+    @apply from-red-900/20 to-red-800/20 border-red-500/30;
+  }
+
+  /* Boutons d'action centrés */
+  .f1-button-container {
+    @apply flex justify-center;
+  }
+
+  /* Spinner de chargement */
+  .f1-spinner {
+    @apply w-5 h-5 border-2 border-mercedes-petronas border-t-transparent rounded-full animate-spin mr-3;
+  }
+
+  /* Conteneur principal avec espacement */
+  .f1-component-container {
+    @apply space-y-8;
+  }
+
+  /* Conteneur pour les résultats avec animation */
+  .f1-results-container {
+    @apply animate-fade-in space-y-6;
+  }
+
+  /* Icônes d'erreur */
+  .f1-error-icon {
+    @apply w-6 h-6 bg-red-500 rounded-full flex items-center justify-center mr-3;
+  }
+
+  .f1-error-icon-content {
+    @apply text-white text-sm;
+  }
+
+  /* Contenu des erreurs */
+  .f1-error-content {
+    @apply space-y-1;
+  }
+
+  .f1-error-title {
+    @apply font-semibold;
+  }
+
+  .f1-error-message {
+    @apply text-sm opacity-90;
+  }
+
+  /* Section de contenu de carte */
+  .f1-card-content {
+    @apply p-8;
+  }
+
+  .f1-card-content-6 {
+    @apply p-6;
+  }
+
+  /* Classes utilitaires pour les positions */
+  .f1-header-info {
+    @apply flex items-center justify-between;
+  }
+
+  .f1-header-title {
+    @apply text-2xl font-f1 font-bold mb-2;
+  }
+
+  .f1-header-description {
+    @apply text-mercedes-dark-silver font-racing;
+  }
+
+  /* Animations et transitions */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Éléments de course spécifiques Mercedes */
+  .racing-line {
+    position: relative;
+  }
+
+  .racing-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #00D2BE, #C0C0C0, #00D2BE);
+    animation: mercedessLineScan 3s ease-in-out infinite;
+  }
+
+  @keyframes mercedessLineScan {
+    0%, 100% { transform: scaleX(0); }
+    50% { transform: scaleX(1); }
+  }
+
+}
+
+/* Professional Mercedes Animations */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes mercedesScan {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes silverShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes borderPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Global Mercedes Dark Theme */
+#app {
+  @apply min-h-screen bg-gradient-to-br from-mercedes-black via-mercedes-charcoal to-mercedes-gunmetal font-racing text-mercedes-platinum;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+/* Enhanced Mercedes Scrollbar */
+::-webkit-scrollbar {
+  @apply w-3 h-3;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-mercedes-charcoal rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-t from-mercedes-petronas to-mercedes-cyan rounded-full hover:from-mercedes-cyan hover:to-mercedes-petronas;
+}
+
+/* Professional Focus States */
+*:focus {
+  @apply outline-none;
+}
+
+/* Racing Typography */
+h1, h2, h3 {
+  @apply font-f1;
+}
+
+h4, h5, h6 {
+  @apply font-racing;
+}
+
+/* Racing Elements */
+.racing-line {
+  position: relative;
+}
+
+.racing-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #00D2BE, #C0C0C0, #00D2BE);
+  animation: mercedessLineScan 3s ease-in-out infinite;
+}
+
+@keyframes mercedessLineScan {
+  0%, 100% { transform: scaleX(0); }
+  50% { transform: scaleX(1); }
+}
+
+/* Performance Metrics Styling */
+.metric-high { @apply text-mercedes-green; }
+.metric-medium { @apply text-mercedes-cyan; }
+.metric-low { @apply text-red-400; }
+
+/* Championship Positions */
+.position-1 { @apply text-mercedes-silver; }
+.position-2 { @apply text-mercedes-platinum; }
+.position-3 { @apply text-mercedes-dark-silver; }
+
+.title-gradient {
+  @apply text-4xl font-f1 font-bold text-transparent bg-clip-text bg-gradient-to-r from-mercedes-petronas to-mercedes-silver;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
