@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useAvailableYears } from './composables/useAvailableYears'
 import ApiHealthComponent from './components/ApiHealthComponent.vue'
 import FastestLapComponent from './components/FastestLapComponent.vue'
 import SessionResultsComponent from './components/SessionResultsComponent.vue'
 import DriverInfoComponent from './components/DriverInfoComponent.vue'
 import SessionInfoComponent from './components/SessionInfoComponent.vue'
+import LatestRaceComponent from './components/LatestRaceComponent.vue'
 
 interface Tab {
   id: string
@@ -12,19 +14,27 @@ interface Tab {
   component: string
 }
 
-const activeTab = ref<string>('health')
+const activeTab = ref<string>('latest-race')
 
 const tabs: Tab[] = [
+  { id: 'latest-race', label: 'Dernière Course', component: 'LatestRaceComponent' },
   { id: 'health', label: 'État API', component: 'ApiHealthComponent' },
-  { id: 'fastest-lap', label: 'Tour le plus rapide', component: 'FastestLapComponent' },
-  { id: 'session-results', label: 'Résultats de session', component: 'SessionResultsComponent' },
-  { id: 'driver-info', label: 'Info pilote', component: 'DriverInfoComponent' },
+  // { id: 'fastest-lap', label: 'Tour le plus rapide', component: 'FastestLapComponent' },
+  // { id: 'session-results', label: 'Résultats de session', component: 'SessionResultsComponent' },
+  // { id: 'driver-info', label: 'Info pilote', component: 'DriverInfoComponent' },
   { id: 'session-info', label: 'Info session', component: 'SessionInfoComponent' }
 ]
 
 const setActiveTab = (tabId: string): void => {
   activeTab.value = tabId
 }
+
+// Initialiser le chargement des années disponibles au démarrage de l'application
+const { loadAvailableYears } = useAvailableYears()
+
+onMounted(async () => {
+  await loadAvailableYears()
+})
 </script>
 
 <template>
@@ -119,6 +129,7 @@ const setActiveTab = (tabId: string): void => {
           <SessionResultsComponent v-if="activeTab === 'session-results'" />
           <DriverInfoComponent v-if="activeTab === 'driver-info'" />
           <SessionInfoComponent v-if="activeTab === 'session-info'" />
+          <LatestRaceComponent v-if="activeTab === 'latest-race'" />
         </div>
       </div>
     </main>

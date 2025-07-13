@@ -30,6 +30,7 @@ export default {
         'f1-carbon': '#2A2A2A',
         'f1-gold': '#FFD700',
         'f1-silver': '#C0C0C0',
+        'f1-bronze': '#CD7F32',
         'electric-blue': '#00D4FF',
         'neon-green': '#39FF14',
         'racing-orange': '#FF8C00',

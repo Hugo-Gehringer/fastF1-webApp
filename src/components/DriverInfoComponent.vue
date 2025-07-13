@@ -41,27 +41,28 @@
             <label class="f1-label">
               Season
             </label>
-            <input
-              v-model="searchParams.year"
-              type="number"
-              min="2018"
-              :max="new Date().getFullYear()"
-              @input="clearResults"
-              class="f1-input"
-            />
+            <select v-model="searchParams.year" @change="clearResults" class="f1-select" :disabled="yearsLoading">
+              <option value="" disabled>
+                {{ yearsLoading ? 'Loading years...' : 'Select Season' }}
+              </option>
+              <option v-for="year in availableYears" :key="year" :value="year">
+                {{ year }}
+              </option>
+            </select>
           </div>
 
           <div class="f1-form-field">
             <label class="f1-label">
               Circuit
             </label>
-            <input
-              v-model="searchParams.circuit"
-              type="text"
-              placeholder="monza, silverstone..."
-              @input="clearResults"
-              class="f1-input"
-            />
+            <select v-model="searchParams.circuit" @change="clearResults" class="f1-select" :disabled="circuitsLoading || !searchParams.year">
+              <option value="" disabled>
+                {{ circuitsLoading ? 'Loading circuits...' : !searchParams.year ? 'Select a year first' : 'Select Circuit' }}
+              </option>
+              <option v-for="circuit in getCircuitOptions()" :key="circuit.value" :value="circuit.value">
+                Round {{ circuit.roundNumber }}: {{ circuit.label }}
+              </option>
+            </select>
           </div>
 
           <div class="f1-form-field">
@@ -114,7 +115,7 @@
               DRIVER PROFILE
             </h3>
             <p class="f1-header-description">
-              {{ driverInfo.driver_name || searchParams.driverCode }} - {{ searchParams.circuit?.toUpperCase() }} {{ searchParams.year }}
+              {{ driverInfo.full_name || searchParams.driverCode }} - {{ searchParams.circuit?.toUpperCase() }} {{ searchParams.year }}
             </p>
           </div>
           <div class="telemetry-display">
@@ -139,7 +140,7 @@
                 <div class="f1-metric-indicator indicator-red"></div>
               </div>
               <div class="f1-metric-value">
-                {{ driverInfo.driver_name || 'N/A' }}
+                {{ driverInfo.full_name || 'N/A' }}
               </div>
               <div class="f1-metric-subtitle">Racing Driver</div>
             </div>
@@ -330,7 +331,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useAvailableYears } from '../composables/useAvailableYears'
+import { useAvailableCircuits } from '../composables/useAvailableCircuits'
 import f1ApiService, { type DriverInfoData } from '../services/f1ApiService'
 
 interface SearchParams {
@@ -340,9 +343,13 @@ interface SearchParams {
   session: string
 }
 
+// Utiliser les composables partagés
+const { availableYears, yearsLoading, getLatestYear } = useAvailableYears()
+const { availableCircuits, circuitsLoading, loadAvailableCircuits, getCircuitOptions, clearCircuits } = useAvailableCircuits()
+
 const searchParams = ref<SearchParams>({
   driverCode: '',
-  year: new Date().getFullYear(),
+  year: getLatestYear(),
   circuit: '',
   session: ''
 })
@@ -350,6 +357,15 @@ const searchParams = ref<SearchParams>({
 const driverInfo = ref<DriverInfoData | null>(null)
 const loading = ref<boolean>(false)
 const error = ref<string | null>(null)
+
+// Watcher pour charger les circuits quand l'année change
+watch(() => searchParams.value.year, async (newYear) => {
+  if (newYear) {
+    searchParams.value.circuit = '' // Réinitialiser le circuit sélectionné
+    clearResults()
+    await loadAvailableCircuits(newYear)
+  }
+}, { immediate: true })
 
 const canSearch = computed<boolean>(() => {
   return !!(searchParams.value.driverCode &&

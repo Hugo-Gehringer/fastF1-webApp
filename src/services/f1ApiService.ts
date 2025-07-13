@@ -1,6 +1,13 @@
 import axios, { AxiosInstance, AxiosError } from 'axios'
 
 // Types pour les données FastF1
+interface AvailableYearsData {
+  available_years: number[]
+  total_years: number
+  earliest_year: number
+  latest_year: number
+}
+
 interface FastestLapData {
   driver_name?: string
   lap_time?: string
@@ -47,7 +54,7 @@ interface DriverTelemetry {
 }
 
 interface DriverInfoData {
-  driver_name?: string
+  full_name?: string
   driver_code?: string
   team?: string
   driver_number?: number
@@ -94,6 +101,40 @@ interface SessionInfoData {
   weather?: SessionWeather
   circuit?: SessionCircuit
   statistics?: SessionStatistics
+}
+
+interface LatestRaceData {
+  year: number
+  circuit: string
+  session: string
+  session_name: string
+  circuit_name: string
+  country: string
+  location: string
+  date: string
+  total_laps: number
+  drivers: Array<{
+    driver_code: string
+    name: string
+    team: string
+    number: string
+  }>
+  fastest_lap: {
+    driver: string
+    lap_time: string
+    lap_number: number
+    team: string
+  }
+  is_latest_session: boolean
+  session_type: string
+  event_date: string
+  session_dates: {
+    fp1: string
+    fp2: string
+    fp3: string
+    qualifying: string
+    race: string
+  }
 }
 
 interface HealthStatus {
@@ -314,6 +355,83 @@ class F1ApiService {
   }
 
   /**
+   * Récupère la liste des années de données disponibles
+   */
+  async getAvailableYears(): Promise<AvailableYearsData> {
+    try {
+      const response = await this.api.get<ApiResponse<AvailableYearsData>>('/years')
+
+      if ('error' in response.data) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data
+    } catch (error) {
+      // Gestion spécifique des erreurs categorisées
+      if (error && typeof error === 'object' && 'type' in error) {
+        const errorInfo = error as ErrorInfo
+        throw new Error(errorInfo.message)
+      }
+
+      // Autres erreurs
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      throw new Error(`Erreur lors de la récupération des années disponibles: ${errorMessage}`)
+    }
+  }
+
+  /**
+   * Récupère le calendrier complet d'une saison
+   */
+  async getSeasonSchedule(year: number): Promise<SeasonScheduleData> {
+    try {
+      const response = await this.api.get<ApiResponse<SeasonScheduleData>>(`/seasons/${year}/schedule`)
+
+      if ('error' in response.data) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data
+    } catch (error) {
+      // Gestion spécifique des erreurs categorisées
+      if (error && typeof error === 'object' && 'type' in error) {
+        const errorInfo = error as ErrorInfo
+        throw new Error(errorInfo.message)
+      }
+
+      // Autres erreurs
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      throw new Error(`Erreur lors de la récupération du calendrier de la saison: ${errorMessage}`)
+    }
+  }
+
+  /**
+   * Récupère les informations de la dernière course disponible
+   */
+  async getLatestRace(sessionType: string = 'Race'): Promise<LatestRaceData> {
+    try {
+      const response = await this.api.get<ApiResponse<LatestRaceData>>('/latest-race', {
+        params: { session_type: sessionType }
+      })
+
+      if ('error' in response.data) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data
+    } catch (error) {
+      // Gestion spécifique des erreurs categorisées
+      if (error && typeof error === 'object' && 'type' in error) {
+        const errorInfo = error as ErrorInfo
+        throw new Error(errorInfo.message)
+      }
+
+      // Autres erreurs
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      throw new Error(`Erreur lors de la récupération de la dernière course: ${errorMessage}`)
+    }
+  }
+
+  /**
    * Vérification de l'état de santé de l'API
    */
   async healthCheck(): Promise<HealthStatus> {
@@ -368,7 +486,11 @@ export type {
   SessionResultsData,
   DriverInfoData,
   SessionInfoData,
+  LatestRaceData,
   HealthStatus,
   ErrorInfo,
-  ErrorType
+  ErrorType,
+  AvailableYearsData,
+  SeasonEvent,
+  SeasonScheduleData
 }
