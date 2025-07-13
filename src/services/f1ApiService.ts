@@ -53,6 +53,35 @@ interface DriverTelemetry {
   tire_pressure?: string
 }
 
+interface TrackVisualizationData {
+  circuit: string
+  year: number
+  track_outline: {
+    x: number[]
+    y: number[]
+  }
+  track_length: number
+  data_points: number
+}
+
+interface TrackMapData {
+  circuit: string
+  year: number
+  session: string
+  coordinates: {
+    x: number[]
+    y: number[]
+    z: number[]
+  }
+  additional_data: {
+    distance: number[]
+    speed: number[]
+    throttle: number[]
+  }
+  track_length: number
+  data_points: number
+}
+
 interface DriverInfoData {
   full_name?: string
   driver_code?: string
@@ -432,6 +461,62 @@ class F1ApiService {
   }
 
   /**
+   * Récupère les données de visualisation du tracé d'un circuit
+   */
+  async getTrackVisualization(
+    year: number,
+    circuit: string
+  ): Promise<TrackVisualizationData> {
+    try {
+      const response = await this.api.get<ApiResponse<TrackVisualizationData>>(`/track-visualization/${year}/${circuit}`)
+
+      if ('error' in response.data) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data
+    } catch (error) {
+      // Gestion spécifique des erreurs categorisées
+      if (error && typeof error === 'object' && 'type' in error) {
+        const errorInfo = error as ErrorInfo
+        throw new Error(errorInfo.message)
+      }
+
+      // Autres erreurs
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      throw new Error(`Erreur lors de la récupération de la visualisation du tracé: ${errorMessage}`)
+    }
+  }
+
+  /**
+   * Récupère les données de carte du tracé avec télémétrie
+   */
+  async getTrackMap(
+    year: number,
+    circuit: string
+  ): Promise<TrackMapData> {
+    try {
+      const response = await this.api.get<ApiResponse<TrackMapData>>(`/track-map/${year}/${circuit}`)
+
+      if ('error' in response.data) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data
+    } catch (error) {
+      // Gestion spécifique des erreurs categorisées
+      if (error && typeof error === 'object' && 'type' in error) {
+        const errorInfo = error as ErrorInfo
+        throw new Error(errorInfo.message)
+      }
+
+      // Autres erreurs
+      const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue'
+      throw new Error(`Erreur lors de la récupération de la carte du tracé: ${errorMessage}`)
+    }
+  }
+
+  /**
    * Vérification de l'état de santé de l'API
    */
   async healthCheck(): Promise<HealthStatus> {
@@ -491,6 +576,8 @@ export type {
   ErrorInfo,
   ErrorType,
   AvailableYearsData,
+  TrackVisualizationData,
+  TrackMapData,
   SeasonEvent,
   SeasonScheduleData
 }

@@ -18,191 +18,228 @@
       </div>
     </div>
 
-    <!-- Session Information -->
-    <div class="f1-card">
+    <!-- Tab Navigation -->
+    <div class="f1-card mb-6">
       <div class="f1-card-content">
-        <h4 class="f1-section-title">
-          <div class="w-1 h-6 bg-gradient-to-t from-mercedes-petronas to-mercedes-cyan rounded mr-3"></div>
-          SESSION DETAILS
-        </h4>
-
-        <div class="f1-data-grid-4">
-          <div class="f1-metric-card" style="--accent-color: #00D2BE;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Session Type</h5>
-              <div class="f1-metric-indicator indicator-petronas"></div>
-            </div>
-            <div class="f1-metric-value value-petronas">
-              {{ sessionData.session_name || 'N/A' }}
-            </div>
-            <div class="f1-metric-subtitle">{{ sessionType }}</div>
-          </div>
-
-          <div class="f1-metric-card" style="--accent-color: #C0C0C0;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Circuit</h5>
-              <div class="f1-metric-indicator indicator-silver"></div>
-            </div>
-            <div class="f1-metric-value value-silver">
-              {{ sessionData.circuit_name || sessionData.location || 'N/A' }}
-            </div>
-            <div class="f1-metric-subtitle">{{ sessionData.country || 'Circuit' }}</div>
-          </div>
-
-          <div class="f1-metric-card" style="--accent-color: #00FF7F;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Date & Time</h5>
-              <div class="f1-metric-indicator indicator-green"></div>
-            </div>
-            <div class="f1-metric-value value-green">
-              {{ formatDate(sessionData.date) || 'N/A' }}
-            </div>
-            <div class="f1-metric-subtitle">{{ dateSubtitle }}</div>
-          </div>
-
-          <div class="f1-metric-card" style="--accent-color: #00F5FF;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Total Laps</h5>
-              <div class="f1-metric-indicator indicator-cyan"></div>
-            </div>
-            <div class="f1-metric-value-large value-cyan">
-              {{ sessionData.total_laps || 'N/A' }}
-            </div>
-            <div class="f1-metric-subtitle">{{ lapsSubtitle }}</div>
-          </div>
+        <div class="f1-tabs">
+          <button
+            v-for="tab in tabs"
+            :key="tab.id"
+            @click="activeTab = tab.id"
+            :class="['f1-tab', { 'f1-tab-active': activeTab === tab.id }]"
+          >
+            <div class="f1-tab-icon">{{ tab.icon }}</div>
+            <span class="f1-tab-label">{{ tab.label }}</span>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Podium Summary -->
-    <div v-if="sessionData.drivers && sessionData.drivers.length >= 3" class="mt-8 p-6 bg-gradient-to-r from-mercedes-black/50 to-mercedes-charcoal/50 rounded-xl border border-mercedes-dark-silver/30">
-      <h5 class="text-lg font-racing font-semibold text-mercedes-platinum mb-4 flex items-center">
-        <div class="w-1 h-5 bg-gradient-to-t from-f1-gold to-mercedes-silver rounded mr-3"></div>
-        PODIUM FINISHERS
-      </h5>
+    <!-- Tab Content -->
+    <div class="f1-tab-content">
+      <!-- Session Overview Tab -->
+      <div v-if="activeTab === 'overview'" class="f1-tab-panel">
+        <!-- Session Information -->
+        <div class="f1-card">
+          <div class="f1-card-content">
+            <h4 class="f1-section-title">
+              <div class="w-1 h-6 bg-gradient-to-t from-mercedes-petronas to-mercedes-cyan rounded mr-3"></div>
+              SESSION DETAILS
+            </h4>
 
-      <div class="f1-data-grid">
-        <div v-for="(driver, index) in sessionData.drivers.slice(0, 3)" :key="`podium-${driver.driver_code}`"
-             class="text-center">
-          <div class="text-4xl mb-2">{{ getPositionEmoji(index + 1) }}</div>
-          <div class="text-lg font-f1 font-bold">
-            P{{ index + 1 }}
-          </div>
-          <div class="text-sm font-racing text-mercedes-platinum">
-            {{ driver.name }}
-          </div>
-          <div class="text-xs" :class="getTeamValueClass(driver.team)">
-            {{ driver.team }}
-          </div>
-        </div>
-      </div>
-    </div>
+            <div class="f1-data-grid-4">
+              <div class="f1-metric-card" style="--accent-color: #00D2BE;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Session Type</h5>
+                  <div class="f1-metric-indicator indicator-petronas"></div>
+                </div>
+                <div class="f1-metric-value value-petronas">
+                  {{ sessionData.session_name || 'N/A' }}
+                </div>
+                <div class="f1-metric-subtitle">{{ sessionType }}</div>
+              </div>
 
-    <!-- Fastest Lap Information -->
-    <div v-if="sessionData.fastest_lap" class="f1-card">
-      <div class="f1-card-content">
-        <h4 class="f1-section-title">
-          <div class="w-1 h-6 bg-gradient-to-t from-f1-gold to-mercedes-silver rounded mr-3"></div>
-          FASTEST LAP
-        </h4>
+              <div class="f1-metric-card" style="--accent-color: #C0C0C0;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Circuit</h5>
+                  <div class="f1-metric-indicator indicator-silver"></div>
+                </div>
+                <div class="f1-metric-value value-silver">
+                  {{ sessionData.circuit_name || sessionData.location || 'N/A' }}
+                </div>
+                <div class="f1-metric-subtitle">{{ sessionData.country || 'Circuit' }}</div>
+              </div>
 
-        <div class="f1-data-grid">
-          <div class="f1-metric-card championship-gold" style="--accent-color: #FFD700;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Driver</h5>
-              <div class="f1-metric-indicator indicator-gold"></div>
-            </div>
-            <div class="f1-metric-value-2xl value-gold">
-              {{ sessionData.fastest_lap.driver }}
-            </div>
-            <div class="f1-metric-subtitle">{{ sessionData.fastest_lap.team }}</div>
-          </div>
+              <div class="f1-metric-card" style="--accent-color: #00FF7F;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Date & Time</h5>
+                  <div class="f1-metric-indicator indicator-green"></div>
+                </div>
+                <div class="f1-metric-value value-green">
+                  {{ formatDate(sessionData.date) || 'N/A' }}
+                </div>
+                <div class="f1-metric-subtitle">{{ dateSubtitle }}</div>
+              </div>
 
-          <div class="f1-metric-card speed-indicator" style="--accent-color: #00D2BE;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Lap Time</h5>
-              <div class="f1-metric-indicator indicator-petronas"></div>
+              <div class="f1-metric-card" style="--accent-color: #00F5FF;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Total Laps</h5>
+                  <div class="f1-metric-indicator indicator-cyan"></div>
+                </div>
+                <div class="f1-metric-value-large value-cyan">
+                  {{ sessionData.total_laps || 'N/A' }}
+                </div>
+                <div class="f1-metric-subtitle">{{ lapsSubtitle }}</div>
+              </div>
             </div>
-            <div class="f1-metric-value-2xl value-petronas font-mono">
-              {{ formatLapTime(sessionData.fastest_lap.lap_time) }}
-            </div>
-            <div class="f1-metric-subtitle">Fastest Time</div>
-          </div>
-
-          <div class="f1-metric-card" style="--accent-color: #C0C0C0;">
-            <div class="f1-metric-header">
-              <h5 class="f1-metric-title">Lap Number</h5>
-              <div class="f1-metric-indicator indicator-silver"></div>
-            </div>
-            <div class="f1-metric-value-large value-silver">
-              {{ sessionData.fastest_lap.lap_number }}
-            </div>
-            <div class="f1-metric-subtitle">Race Lap</div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Drivers List -->
-    <div v-if="sessionData.drivers && sessionData.drivers.length > 0" class="f1-card">
-      <div class="f1-card-content">
-        <h4 class="f1-section-title">
-          <div class="w-1 h-6 bg-gradient-to-t from-mercedes-platinum to-mercedes-dark-silver rounded mr-3"></div>
-          {{ classificationType }} ({{ sessionData.drivers.length }})
-        </h4>
+        <!-- Podium Summary -->
+        <div v-if="sessionData.drivers && sessionData.drivers.length >= 3" class="mt-8 p-6 bg-gradient-to-r from-mercedes-black/50 to-mercedes-charcoal/50 rounded-xl border border-mercedes-dark-silver/30">
+          <h5 class="text-lg font-racing font-semibold text-mercedes-platinum mb-4 flex items-center">
+            <div class="w-1 h-5 bg-gradient-to-t from-f1-gold to-mercedes-silver rounded mr-3"></div>
+            PODIUM FINISHERS
+          </h5>
 
-        <div class="space-y-3">
-          <div v-for="(driver, index) in sessionData.drivers" :key="driver.driver_code"
-               class="f1-metric-card flex items-center"
-               style="--accent-color: #2C2C2E;"
-               :class="getPositionCardClass(index + 1) || getTeamCardClass(driver.team)">
-            <!-- Position Number -->
-            <div class="flex items-center justify-center w-16 h-16 rounded-xl mr-4"
-                 :class="getPositionBadgeClass(index + 1)">
-              <span class="text-2xl font-f1 font-bold">
-                {{ index + 1 }}
-              </span>
+          <div class="f1-data-grid">
+            <div v-for="(driver, index) in sessionData.drivers.slice(0, 3)" :key="`podium-${driver.driver_code}`"
+                 class="text-center">
+              <div class="text-4xl mb-2">{{ getPositionEmoji(index + 1) }}</div>
+              <div class="text-lg font-f1 font-bold">
+                P{{ index + 1 }}
+              </div>
+              <div class="text-sm font-racing text-mercedes-platinum">
+                {{ driver.name }}
+              </div>
+              <div class="text-xs" :class="getTeamValueClass(driver.team)">
+                {{ driver.team }}
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Driver Info -->
-            <div class="flex-1">
-              <div class="f1-metric-header">
-                <div class="flex items-center space-x-3">
-                  <h5 class="f1-metric-title text-lg">{{ driver.name }}</h5>
-                  <span class="px-2 py-1 rounded text-xs font-racing font-semibold"
-                        :class="getTeamBadgeClass(driver.team)">
-                    {{ driver.team }}
+        <!-- Fastest Lap Information -->
+        <div v-if="sessionData.fastest_lap" class="f1-card">
+          <div class="f1-card-content">
+            <h4 class="f1-section-title">
+              <div class="w-1 h-6 bg-gradient-to-t from-f1-gold to-mercedes-silver rounded mr-3"></div>
+              FASTEST LAP
+            </h4>
+
+            <div class="f1-data-grid">
+              <div class="f1-metric-card championship-gold" style="--accent-color: #FFD700;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Driver</h5>
+                  <div class="f1-metric-indicator indicator-gold"></div>
+                </div>
+                <div class="f1-metric-value-2xl value-gold">
+                  {{ sessionData.fastest_lap.driver }}
+                </div>
+                <div class="f1-metric-subtitle">{{ sessionData.fastest_lap.team }}</div>
+              </div>
+
+              <div class="f1-metric-card speed-indicator" style="--accent-color: #00D2BE;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Lap Time</h5>
+                  <div class="f1-metric-indicator indicator-petronas"></div>
+                </div>
+                <div class="f1-metric-value-2xl value-petronas font-mono">
+                  {{ formatLapTime(sessionData.fastest_lap.lap_time) }}
+                </div>
+                <div class="f1-metric-subtitle">Fastest Time</div>
+              </div>
+
+              <div class="f1-metric-card" style="--accent-color: #C0C0C0;">
+                <div class="f1-metric-header">
+                  <h5 class="f1-metric-title">Lap Number</h5>
+                  <div class="f1-metric-indicator indicator-silver"></div>
+                </div>
+                <div class="f1-metric-value-large value-silver">
+                  {{ sessionData.fastest_lap.lap_number }}
+                </div>
+                <div class="f1-metric-subtitle">Race Lap</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drivers List -->
+        <div v-if="sessionData.drivers && sessionData.drivers.length > 0" class="f1-card">
+          <div class="f1-card-content">
+            <h4 class="f1-section-title">
+              <div class="w-1 h-6 bg-gradient-to-t from-mercedes-platinum to-mercedes-dark-silver rounded mr-3"></div>
+              {{ classificationType }} ({{ sessionData.drivers.length }})
+            </h4>
+
+            <div class="space-y-3">
+              <div v-for="(driver, index) in sessionData.drivers" :key="driver.driver_code"
+                   class="f1-metric-card flex items-center"
+                   style="--accent-color: #2C2C2E;"
+                   :class="getPositionCardClass(index + 1) || getTeamCardClass(driver.team)">
+                <!-- Position Number -->
+                <div class="flex items-center justify-center w-16 h-16 rounded-xl mr-4"
+                     :class="getPositionBadgeClass(index + 1)">
+                  <span class="text-2xl font-f1 font-bold">
+                    {{ index + 1 }}
                   </span>
                 </div>
-                <div class="f1-metric-indicator" :class="getTeamIndicatorClass(driver.team)"></div>
-              </div>
 
-              <div class="flex items-center space-x-4 mt-2">
-                <div class="f1-metric-value-2xl" :class="getTeamValueClass(driver.team)">
-                  {{ driver.driver_code }}
-                </div>
-                <div class="text-sm text-mercedes-dark-silver font-racing">
-                  #{{ driver.number }}
-                </div>
-              </div>
-            </div>
+                <!-- Driver Info -->
+                <div class="flex-1">
+                  <div class="f1-metric-header">
+                    <div class="flex items-center space-x-3">
+                      <h5 class="f1-metric-title text-lg">{{ driver.name }}</h5>
+                      <span class="px-2 py-1 rounded text-xs font-racing font-semibold"
+                            :class="getTeamBadgeClass(driver.team)">
+                        {{ driver.team }}
+                      </span>
+                    </div>
+                    <div class="f1-metric-indicator" :class="getTeamIndicatorClass(driver.team)"></div>
+                  </div>
 
-            <!-- Position Trophy/Icon -->
-            <div class="ml-4" v-if="index < 3">
-              <div class="text-3xl">
-                {{ getPositionEmoji(index + 1) }}
+                  <div class="flex items-center space-x-4 mt-2">
+                    <div class="f1-metric-value-2xl" :class="getTeamValueClass(driver.team)">
+                      {{ driver.driver_code }}
+                    </div>
+                    <div class="text-sm text-mercedes-dark-silver font-racing">
+                      #{{ driver.number }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Position Trophy/Icon -->
+                <div class="ml-4" v-if="index < 3">
+                  <div class="text-3xl">
+                    {{ getPositionEmoji(index + 1) }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Track Visualization Tab -->
+      <div v-if="activeTab === 'track'" class="f1-tab-panel">
+        <TrackVisualizationTab
+          :year="sessionData.year"
+          :circuit="sessionData.circuit || sessionData.location"
+        />
+        <TelemetryTrackTab
+            :year="sessionData.year"
+            :circuit="sessionData.circuit || sessionData.location"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { SessionInfoData, LatestRaceData } from '../services/f1ApiService'
+import TrackVisualizationTab from './TrackVisualizationTab.vue'
+import TelemetryTrackTab from "@/components/TelemetryTrackTab.vue";
 
 interface Props {
   sessionData: SessionInfoData | LatestRaceData | null
@@ -212,6 +249,23 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   mode: 'session'
 })
+
+// Active tab state
+const activeTab = ref<string>('overview')
+
+// Tab configuration
+const tabs = [
+  {
+    id: 'overview',
+    label: 'SESSION OVERVIEW',
+    icon: '📊'
+  },
+  {
+    id: 'track',
+    label: 'TRACK LAYOUT',
+    icon: '🏁'
+  }
+]
 
 // Computed properties for dynamic content based on mode
 const sessionType = computed(() => {
@@ -336,4 +390,62 @@ const getTeamBadgeClass = (teamName: string): string => {
 </script>
 
 <style scoped>
+.f1-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.f1-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Racing Sans One', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.f1-tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.f1-tab-active {
+  color: #00D2BE;
+  border-bottom-color: #00D2BE;
+  background: rgba(0, 210, 190, 0.1);
+}
+
+.f1-tab-icon {
+  font-size: 18px;
+}
+
+.f1-tab-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.f1-tab-content {
+  min-height: 400px;
+}
+
+.f1-tab-panel {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
