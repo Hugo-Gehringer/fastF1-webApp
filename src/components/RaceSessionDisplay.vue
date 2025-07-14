@@ -222,10 +222,6 @@
 
       <!-- Track Visualization Tab -->
       <div v-if="activeTab === 'track'" class="f1-tab-panel">
-        <TrackVisualizationTab
-          :year="sessionData.year"
-          :circuit="sessionData.circuit || sessionData.location"
-        />
         <TelemetryTrackTab
             :year="sessionData.year"
             :circuit="sessionData.circuit || sessionData.location"
@@ -238,7 +234,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { SessionInfoData, LatestRaceData } from '../services/f1ApiService'
-import TrackVisualizationTab from './TrackVisualizationTab.vue'
 import TelemetryTrackTab from "@/components/TelemetryTrackTab.vue";
 
 interface Props {

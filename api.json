@@ -1,0 +1,260 @@
+{
+  "info": {
+    "name": "OpenF1 API",
+    "_postman_id": "cb6ae6fd-3e7f-4bfc-8c10-openf1api2024",
+    "description": "OpenF1 public API endpoints for F1 telemetry, car data, laps, intervals, and more.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Car Data",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/car_data?driver_number={{driver_number}}&session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "car_data"],
+          "query": [
+            { "key": "driver_number", "value": "{{driver_number}}" },
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Location",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/location?driver_number={{driver_number}}&session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "location"],
+          "query": [
+            { "key": "driver_number", "value": "{{driver_number}}" },
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Laps",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/laps?session_key={{session_key}}&driver_number={{driver_number}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "laps"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" },
+            { "key": "driver_number", "value": "{{driver_number}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Drivers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/drivers?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "drivers"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Meetings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/meetings?year={{year}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "meetings"],
+          "query": [
+            { "key": "year", "value": "{{year}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Sessions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/sessions?meeting_key={{meeting_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "sessions"],
+          "query": [
+            { "key": "meeting_key", "value": "{{meeting_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intervals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/intervals?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "intervals"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Pit",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/pit?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "pit"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Position",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/position?meeting_key={{meeting_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "position"],
+          "query": [
+            { "key": "meeting_key", "value": "{{meeting_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Race Control",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/race_control?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "race_control"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Session Result",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/session_result?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "session_result"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Starting Grid",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/starting_grid?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "starting_grid"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Stints",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/stints?session_key={{session_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "stints"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Team Radio",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/team_radio?session_key={{session_key}}&driver_number={{driver_number}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "team_radio"],
+          "query": [
+            { "key": "session_key", "value": "{{session_key}}" },
+            { "key": "driver_number", "value": "{{driver_number}}" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Weather",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.openf1.org/v1/weather?meeting_key={{meeting_key}}",
+          "protocol": "https",
+          "host": ["api", "openf1", "org"],
+          "path": ["v1", "weather"],
+          "query": [
+            { "key": "meeting_key", "value": "{{meeting_key}}" }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "driver_number", "value": "1" },
+    { "key": "session_key", "value": "latest" },
+    { "key": "year", "value": "2023" },
+    { "key": "meeting_key", "value": "latest" }
+  ]
+}
